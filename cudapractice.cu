@@ -48,9 +48,9 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 	Matrix d_A;
 	d_A.width = A.width; d_A.height = A.height;
 	size_t size = A.width * A.height * sizeof(float);
-	cudaMalloc(&d_A.elements, size);
 
 	auto time_memcpy1_start = std::chrono::high_resolution_clock::now();
+	cudaMalloc(&d_A.elements, size);
 	cudaMemcpy(d_A.elements, A.elements, size, cudaMemcpyHostToDevice);
 	auto time_memcpy1_end = std::chrono::high_resolution_clock::now();
 	std::cout << "Memcpy Time : " << (double)std::chrono::duration_cast<std::chrono::microseconds>(time_memcpy1_end - time_memcpy1_start).count() / 1000000. << " seconds" << std::endl;
@@ -59,9 +59,8 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 	Matrix d_B;
 	d_B.width = B.width; d_B.height = B.height;
 	size = B.width * B.height * sizeof(float);
-	cudaMalloc(&d_B.elements, size);
-
 	auto time_memcpy2_start = std::chrono::high_resolution_clock::now();
+	cudaMalloc(&d_B.elements, size);
 	cudaMemcpy(d_B.elements, B.elements, size, cudaMemcpyHostToDevice);
 	auto time_memcpy2_end = std::chrono::high_resolution_clock::now();
 	std::cout << "Memcpy Time : " << (double)std::chrono::duration_cast<std::chrono::microseconds>(time_memcpy2_end - time_memcpy2_start).count() / 1000000. << " seconds" << std::endl;
@@ -84,7 +83,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 	auto time_memcpy3_start = std::chrono::high_resolution_clock::now();
 	cudaMemcpy(C.elements, d_C.elements, size, cudaMemcpyDeviceToHost);
 	auto time_memcpy3_end = std::chrono::high_resolution_clock::now();
-		std::cout << "Memcpy Time : " << (double)std::chrono::duration_cast<std::chrono::microseconds>(time_memcpy3_end - time_memcpy3_start).count() / 1000000. << " seconds" << std::endl;
+	std::cout << "Memcpy Time : " << (double)std::chrono::duration_cast<std::chrono::microseconds>(time_memcpy3_end - time_memcpy3_start).count() / 1000000. << " seconds" << std::endl;
 
 	// Free device memory
 	cudaFree(d_A.elements);
