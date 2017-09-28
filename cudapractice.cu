@@ -59,7 +59,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 	Matrix d_B;
 	d_B.width = B.width; d_B.height = B.height;
 	size = B.width * B.height * sizeof(float);
-	
+
 	auto time_memcpy2_start = std::chrono::high_resolution_clock::now();
 	cudaMalloc(&d_B.elements, size);
 	cudaMemcpy(d_B.elements, B.elements, size, cudaMemcpyHostToDevice);
@@ -124,6 +124,7 @@ int main()
 	}
 
 	auto time_start = std::chrono::high_resolution_clock::now();
+	MatMul(A, B, C);
 	MatMul(A, B, C);
 	auto time_end = std::chrono::high_resolution_clock::now();
 	std::cout << "MatMul Time : " << (double)std::chrono::duration_cast<std::chrono::microseconds>(time_end - time_start).count() / 1000000. << " seconds" << std::endl;
