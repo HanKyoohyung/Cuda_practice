@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+#include <chrono>
 
 /*
 __global__ void VecAdd(float* A, float *B, float *C)
@@ -108,8 +109,11 @@ int main()
 		}
 	}
 
+	auto time_start = chrono::high_resolution_clock::now();
 	MatMul(A, B, C);
-	
+	auto time_end = chrono::high_resolution_clock::now();
+	std::cout << "MatMul Time : " << chrono::duration_cast<chrono::microseconds>(time_end - time_start).count() << " microseconds" << std::endl;
+
 	for(int i = 0; i < 10; i++)
 	{
 		std::cout << "C[0][" << i << "] = " << C.elements[i] << std::endl;
