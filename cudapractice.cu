@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <iostream>
+
 /*
 __global__ void VecAdd(float* A, float *B, float *C)
 {
@@ -105,6 +108,9 @@ int main()
 	}
 
 	MatMul(A, B, C);
+
+	std::cout << "C[0][0] = " << C.elements[0] << std::endl;
+	std::cout << "C[0][1] = " << C.elements[1] << std::endl; 
 
 	return 0;
 }
