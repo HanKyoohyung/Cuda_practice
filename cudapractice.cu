@@ -66,7 +66,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 	MatMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
 
 	// Read C from device memory
-	cudaMemcpy(C.elements, C_d.elements, size, cudaMemcpyDeviceToHost);
+	cudaMemcpy(C.elements, d_C.elements, size, cudaMemcpyDeviceToHost);
 
 	// Free device memory
 	cudaFree(d_A.elements);
