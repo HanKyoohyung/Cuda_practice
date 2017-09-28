@@ -125,9 +125,13 @@ int main()
 
 	auto time_start = std::chrono::high_resolution_clock::now();
 	MatMul(A, B, C);
-	MatMul(A, B, C);
 	auto time_end = std::chrono::high_resolution_clock::now();
-	std::cout << "MatMul Time : " << (double)std::chrono::duration_cast<std::chrono::microseconds>(time_end - time_start).count() / 1000000. << " seconds" << std::endl;
+	std::cout << "MatMul 1 Time : " << (double)std::chrono::duration_cast<std::chrono::microseconds>(time_end - time_start).count() / 1000000. << " seconds" << std::endl;
+ 
+	time_start = std::chrono::high_resolution_clock::now();
+	MatMul(A, B, C);
+	time_end = std::chrono::high_resolution_clock::now();
+	std::cout << "MatMul 2 Time : " << (double)std::chrono::duration_cast<std::chrono::microseconds>(time_end - time_start).count() / 1000000. << " seconds" << std::endl;
 
 	for(int i = 0; i < 10; i++)
 	{
