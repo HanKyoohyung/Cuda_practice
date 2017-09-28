@@ -102,8 +102,8 @@ int main()
 	{
 		for(int j = 0; j < 160; j++)
 		{
-			*(A.elements + i * 160 + j) = 0.1 * (float)i + (float)j;
-			*(B.elements + i * 160 + j) = 0.1 * (float)i + (float)j;
+			*(A.elements + i * 160 + j) = 1;
+			*(B.elements + i * 160 + j) = 1;
 		}
 	}
 
