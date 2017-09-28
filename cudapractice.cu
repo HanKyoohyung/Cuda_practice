@@ -60,7 +60,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 	d_B.width = B.width; d_B.height = B.height;
 	size = B.width * B.height * sizeof(float);
 	cudaMalloc(&d_B.elements, size);
-	
+
 	auto time_memcpy2_start = std::chrono::high_resolution_clock::now();
 	cudaMemcpy(d_B.elements, B.elements, size, cudaMemcpyHostToDevice);
 	auto time_memcpy2_end = std::chrono::high_resolution_clock::now();
@@ -73,9 +73,12 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 	cudaMalloc(&d_C.elements, size);
 
 	// Kernel part
+	auto time_kernel_start = std::chrono::high_resolution_clock::now();
 	dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
 	dim3 dimGrid(B.width / dimBlock.x, A.height / dimBlock.y);
 	MatMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
+	auto time_kernel_end = std::chrono::high_resolution_clock::now();
+	std::cout << "kernel Time : " << (double)std::chrono::duration_cast<std::chrono::microseconds>(time_kernel_end - time_kernel_start).count() / 1000000. << " seconds" << std::endl;	
 
 	// Read C from device memory
 	cudaMemcpy(C.elements, d_C.elements, size, cudaMemcpyDeviceToHost);
