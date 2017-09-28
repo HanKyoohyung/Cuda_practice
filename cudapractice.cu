@@ -78,10 +78,13 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 	dim3 dimGrid(B.width / dimBlock.x, A.height / dimBlock.y);
 	MatMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
 	auto time_kernel_end = std::chrono::high_resolution_clock::now();
-	std::cout << "kernel Time : " << (double)std::chrono::duration_cast<std::chrono::microseconds>(time_kernel_end - time_kernel_start).count() / 1000000. << " seconds" << std::endl;	
+	std::cout << "Kernel Time : " << (double)std::chrono::duration_cast<std::chrono::microseconds>(time_kernel_end - time_kernel_start).count() / 1000000. << " seconds" << std::endl;	
 
 	// Read C from device memory
+	auto time_memcpy3_start = std::chrono::high_resolution_clock::now();
 	cudaMemcpy(C.elements, d_C.elements, size, cudaMemcpyDeviceToHost);
+	auto time_memcpy3_end = std::chrono::high_resolution_clock::now();
+		std::cout << "Memcpy Time : " << (double)std::chrono::duration_cast<std::chrono::microseconds>(time_memcpy3_end - time_memcpy3_start).count() / 1000000. << " seconds" << std::endl;
 
 	// Free device memory
 	cudaFree(d_A.elements);
