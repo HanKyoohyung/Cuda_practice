@@ -91,19 +91,20 @@ __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
 
 int main()
 {
+	int test_dim = 1000;
 	Matrix A, B, C;
-	A.width = 160; A.height = 160;
-	B.width = 160; B.height = 160;
-	C.width = 160; C.height = 160;
-	A.elements = new float[160 * 160];
-	B.elements = new float[160 * 160];
-	C.elements = new float[160 * 160];
-	for(int i = 0; i < 160; i++)
+	A.width = test_dim; A.height = test_dim;
+	B.width = test_dim; B.height = test_dim;
+	C.width = test_dim; C.height = test_dim;
+	A.elements = new float[test_dim * test_dim];
+	B.elements = new float[test_dim * test_dim];
+	C.elements = new float[test_dim * test_dim];
+	for(int i = 0; i < test_dim; i++)
 	{
-		for(int j = 0; j < 160; j++)
+		for(int j = 0; j < test_dim; j++)
 		{
-			*(A.elements + i * 160 + j) = 1;
-			*(B.elements + i * 160 + j) = 1;
+			*(A.elements + i * test_dim + j) = 1;
+			*(B.elements + i * test_dim + j) = 1;
 		}
 	}
 
