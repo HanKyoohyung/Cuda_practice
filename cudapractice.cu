@@ -34,7 +34,7 @@ typedef struct {
 } Matrix;
 
 // Thread block size
-#define BlOCK_SIZE 16
+#define BLOCK_SIZE 16
 
 // Forward declaration of the matrix multiplication kernel
 __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
@@ -64,12 +64,12 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 	cudaMalloc(&d_C.elements, size);
 
 	// Kernel part
-	dim3 dimBlock(BLOCK_SIZE, BlOCK_SIZE);
-	dim3 dimGrid(B.witdh / dimBlock.x, A.height / dimBlock.y);
+	dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
+	dim3 dimGrid(B.width / dimBlock.x, A.height / dimBlock.y);
 	MatMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
 
 	// Read C from device memory
-	cudaMemcpy(C.elements, Cd.elements, size, cudaMemcpyDeviceToHost);
+	cudaMemcpy(C.elements, d_C.elements, size, cudaMemcpyDeviceToHost);
 
 	// Free device memory
 	cudaFree(d_A.elements);
@@ -81,10 +81,10 @@ __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
 {
 	float Cval = 0;
 	int row = blockIdx.y * blockDim.y + threadIdx.y;
-	int col = bolckIdx.x * blockDim.x + threadIdx.x;
+	int col = blockIdx.x * blockDim.x + threadIdx.x;
 	for(int i = 0; i < A.width; i++)
 	{
-		Cval += A.elements[row * A.width + e] * B.elements[e * B.width + col];
+		Cval += A.elements[row * A.width + i] * B.elements[i * B.width + col];
 		C.elements[row * C.width + col] = Cval;
 	}
 }
