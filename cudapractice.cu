@@ -34,7 +34,7 @@ typedef struct {
 } Matrix;
 
 // Thread block size
-#define BLOCK_SIZE 16
+#define BLOCK_SIZE 32
 
 // Forward declaration of the matrix multiplication kernel
 __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
@@ -91,7 +91,7 @@ __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
 
 int main()
 {
-	int test_dim = 1000;
+	int test_dim = 1024;
 	Matrix A, B, C;
 	A.width = test_dim; A.height = test_dim;
 	B.width = test_dim; B.height = test_dim;
@@ -109,9 +109,11 @@ int main()
 	}
 
 	MatMul(A, B, C);
-
-	std::cout << "C[0][0] = " << C.elements[0] << std::endl;
-	std::cout << "C[0][1] = " << C.elements[1] << std::endl; 
+	
+	for(int i = 0; i < 10; i++)
+	{
+		std::cout << "C[0][" << i << "] = " << C.elements[i] << std::endl;
+	}
 
 	return 0;
 }
