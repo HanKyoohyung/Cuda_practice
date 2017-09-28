@@ -112,7 +112,7 @@ int main()
 	auto time_start = std::chrono::high_resolution_clock::now();
 	MatMul(A, B, C);
 	auto time_end = std::chrono::high_resolution_clock::now();
-	std::cout << "MatMul Time : " << std::chrono::duration_cast<std::chrono::microseconds>(time_end - time_start).count() << " microseconds" << std::endl;
+	std::cout << "MatMul Time : " << (double)std::chrono::duration_cast<std::chrono::microseconds>(time_end - time_start).count() / 1000000. << " seconds" << std::endl;
 
 	for(int i = 0; i < 10; i++)
 	{
